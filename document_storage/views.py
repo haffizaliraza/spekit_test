@@ -17,11 +17,12 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
 
     def get_folder_list(self, request, *args, **kwargs):
         folder_list = []
-        for item in Folder.objects.filter(state__in=[1, 2]).values_list('id', 'name'):
+        for folder in Folder.objects.filter(state=1):
             folder_list.append(
                 {
-                    'id': item[0],
-                    'folder_name': item[1],
+                    'id': folder.id,
+                    'folder_name': folder.name,
+                    'document_list': [document for document in folder.digital_documents_folder.filter(state=1).values_list('name', flat=True)]
                 }
             )
 
@@ -151,8 +152,6 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
 
     def create(self, request, *args, **kwargs):
         request_data = request.data.copy()
-        folder_id = kwargs.get('folder_id')
-        request_data['folder_id'] = folder_id
         document_serializer = DigitalDocumentsSerializer(data=request_data)
         if document_serializer.is_valid():
             folder_obj = document_serializer.create(request_data)

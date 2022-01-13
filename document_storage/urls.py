@@ -7,10 +7,10 @@ urlpatterns = [
     re_path(r'^folders/$', FolderInformationViewSet.as_view({'get': 'get_folder_list', 'post': 'create'})),
     re_path(r'^folders/(?P<folder_id>\d+)/$', FolderInformationViewSet.as_view({'get': 'get', 'put': 'update'})),
     re_path(r'^documents/(?P<folder_id>\d+)/$', DigitalDocumentsViewSet.as_view(
-        {'get': 'get_document_list', 'post': 'create'}
+        {'get': 'get_document_list', }
     )),
     re_path(r'^documents/$', DigitalDocumentsViewSet.as_view(
-        {'get': 'list'}
+        {'get': 'list', 'post': 'create'}
     )),
     re_path(r'^documents/search/$', DigitalDocumentsViewSet.as_view(
         {'get': 'search_document'}
