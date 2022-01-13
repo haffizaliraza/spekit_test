@@ -1,5 +1,4 @@
 from django.urls import re_path
-
 from document_storage.views import FolderInformationViewSet, DigitalDocumentsViewSet, TopicsViewSet
 
 urlpatterns = [

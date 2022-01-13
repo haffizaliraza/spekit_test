@@ -6,8 +6,6 @@ from rest_framework.response import Response
 from document_storage.models import Folder, DigitalDocuments, Topics
 from document_storage.serializers import FolderSerializer, DigitalDocumentsSerializer, TopicsSerializer
 
-# Create your views here.
-
 
 class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = FolderSerializer
@@ -16,6 +14,16 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
         return Folder.objects.all()
 
     def get_folder_list(self, request, *args, **kwargs):
+
+        """
+           Returns a list of all **active** folders in the system.
+
+           For more details on how accounts are activated please [see here][ref].
+
+           [ref]: https://spekittestcode.herokuapp.com/api/folders/
+           """
+
+
         folder_list = []
         for folder in Folder.objects.filter(state=1):
             folder_list.append(
