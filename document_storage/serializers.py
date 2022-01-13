@@ -44,8 +44,8 @@ class TopicsSerializer(serializers.Serializer):
     def create(self, validated_data):
         topic_obj = Topics()
         topic_obj.name = validated_data.get('name')
-        topic_obj.name = validated_data.get('short_form_descriptors')
-        topic_obj.name = validated_data.get('long_form_descriptors')
+        topic_obj.short_form_descriptors = validated_data.get('short_form_descriptors')
+        topic_obj.long_form_descriptors = validated_data.get('long_form_descriptors')
         topic_obj.state = 1
         topic_obj.save()
         return topic_obj
