@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.core import serializers
 
 from rest_framework import mixins, viewsets, status
@@ -87,12 +86,30 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
     serializer_class = DigitalDocumentsSerializer
 
     def get_queryset(self):
-        return DigitalDocuments.objects.all()
+        return DigitalDocuments.objects.filter(state=1)
+
+    def list(self, request, *args, **kwargs):
+        digital_document_list = []
+        for document in self.get_queryset():
+            digital_document_list.append(
+                {
+                    'id': document.id,
+                    'name': document.name
+                }
+            )
+        return Response(
+            {
+                'success': True,
+                'detail': 'All Document List',
+                'data': digital_document_list,
+            },
+            status=status.HTTP_200_OK
+        )
 
     def get_document_list(self, request, *args, **kwargs):
         document_list = []
         folder_id = kwargs.get('folder_id')
-        for item in DigitalDocuments.objects.filter(state__in=[1, 2], folder_id=folder_id).values_list('id', 'name', 'folder_id'):
+        for item in DigitalDocuments.objects.filter(state=1, folder_id=folder_id).values_list('id', 'name', 'folder_id'):
             document_list.append(
                 {
                     'id': item[0],

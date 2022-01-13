@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0*$=%g=8bfi14h@-s)ff^*535rc6nmxmvdtmqn$5n$fmkh(q@v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['spekittestcode.herokuapp.com']
+ALLOWED_HOSTS = ['spekittestcode.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -84,24 +84,24 @@ WSGI_APPLICATION = 'assignemnt.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'dc97c0bgqaajh0',
-#         'USER': 'gwvjuesjrqhsox',
-#         'PASSWORD': '0339d265f7273a6fdf0ade08574abc62b9945fef553923742bba2ddb19647468',
-#         'HOST': 'ec2-184-73-243-101.compute-1.amazonaws.com',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dc97c0bgqaajh0',
+        'USER': 'gwvjuesjrqhsox',
+        'PASSWORD': '0339d265f7273a6fdf0ade08574abc62b9945fef553923742bba2ddb19647468',
+        'HOST': 'ec2-184-73-243-101.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
 
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'

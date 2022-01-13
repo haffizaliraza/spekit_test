@@ -10,6 +10,9 @@ urlpatterns = [
         {'get': 'get_document_list', 'post': 'create'}
     )),
     re_path(r'^documents/$', DigitalDocumentsViewSet.as_view(
+        {'get': 'list'}
+    )),
+    re_path(r'^documents/search/$', DigitalDocumentsViewSet.as_view(
         {'get': 'search_document'}
     )),
     re_path(r'^topics/$', TopicsViewSet.as_view(
