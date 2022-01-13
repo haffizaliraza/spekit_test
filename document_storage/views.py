@@ -1,13 +1,17 @@
-from django.core import serializers
-
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
 
 from document_storage.models import Folder, DigitalDocuments, Topics
-from document_storage.serializers import FolderSerializer, DigitalDocumentsSerializer, TopicsSerializer
+from document_storage.serializers import FolderSerializer,\
+    DigitalDocumentsSerializer, TopicsSerializer
 
 
-class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class FolderInformationViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
     serializer_class = FolderSerializer
 
     def get_queryset(self):
@@ -15,14 +19,18 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
 
     def get_folder_list(self, request, *args, **kwargs):
 
-
         folder_list = []
         for folder in Folder.objects.filter(state=1):
             folder_list.append(
                 {
                     'id': folder.id,
                     'folder_name': folder.name,
-                    'document_list': [document for document in folder.digital_documents_folder.filter(state=1).values_list('name', flat=True)]
+                    'document_list': [
+                        document for document in
+                        folder.digital_documents_folder.filter(state=1).values_list(
+                            'name',
+                            flat=True
+                        )]
                 }
             )
 
@@ -35,10 +43,11 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
             status=status.HTTP_200_OK
         )
 
-
     def get(self, request, *args, **kwargs):
         try:
-            folder = Folder.objects.filter(id=kwargs.get('folder_id')).values_list("name", "id")
+            folder = Folder.objects.filter(
+                id=kwargs.get('folder_id')
+            ).values_list("name", "id")
             return Response(
                 {
                     'success': True,
@@ -51,12 +60,10 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
             return Response(
                 {
                     'success': True,
-                    'detail': 'Folder Not Found with this id',
+                    'detail': IndexError,
                 },
                 status=status.HTTP_200_OK
             )
-
-
 
     def create(self, request, *args, **kwargs):
         request_data = request.data.copy()
@@ -83,7 +90,12 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
         )
 
 
-class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class DigitalDocumentsViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
     serializer_class = DigitalDocumentsSerializer
 
     def get_queryset(self):
@@ -110,12 +122,15 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
     def get_document_list(self, request, *args, **kwargs):
         document_list = []
         folder_id = kwargs.get('folder_id')
-        for item in DigitalDocuments.objects.filter(state=1, folder_id=folder_id).values_list('id', 'name', 'folder_id'):
+        for document in DigitalDocuments.objects.filter(
+                state=1,
+                folder_id=folder_id
+        ).values_list('id', 'name', 'folder_id'):
             document_list.append(
                 {
-                    'id': item[0],
-                    'document_name': item[1],
-                    'folder_id': item[2],
+                    'id': document[0],
+                    'document_name': document[1],
+                    'folder_id': document[2],
                 }
             )
 
@@ -128,13 +143,15 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
             status=status.HTTP_200_OK
         )
 
-
     def search_document(self, request, *args, **kwargs):
 
         result = []
         folder_name = request.query_params.get("folder_name")
         topic_name = request.query_params.get("topic")
-        for topic in Topics.objects.select_related("folder").filter(name=topic_name, folder__name=folder_name):
+        for topic in Topics.objects.select_related("folder").filter(
+                name=topic_name,
+                folder__name=folder_name
+        ):
             for document in topic.folder.digital_documents_folder.all():
                 result.append({
                     'document_name': document.name,
@@ -149,7 +166,6 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
             status=status.HTTP_200_OK
         )
 
-
     def create(self, request, *args, **kwargs):
         request_data = request.data.copy()
         document_serializer = DigitalDocumentsSerializer(data=request_data)
@@ -160,7 +176,7 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
             return Response(
                 {
                     'success': False,
-                    'detail': folder_serializer.errors
+                    'detail': document_serializer.errors
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -175,7 +191,12 @@ class DigitalDocumentsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin
         )
 
 
-class TopicsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class TopicsViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
     serializer_class = TopicsSerializer
 
     def get_queryset(self):
@@ -184,7 +205,16 @@ class TopicsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.U
     def get_topic_list(self, request, *args, **kwargs):
         topic_list = []
 
-        for item in Topics.objects.filter(state__in=[1, 2]).values_list('id', 'name', 'folder', 'document', 'short_form_descriptors', 'long_form_descriptors'):
+        for item in Topics.objects.filter(
+                state=1
+        ).values_list(
+            'id',
+            'name',
+            'folder',
+            'document',
+            'short_form_descriptors',
+            'long_form_descriptors'
+        ):
             topic_list.append(
                 {
                     'id': item[0],
@@ -243,7 +273,7 @@ class TopicsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.U
             return Response(
                 {
                     'success': False,
-                    'detail': folder_serializer.errors
+                    'detail': topic_serializer.errors
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -260,7 +290,11 @@ class TopicsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.U
     def get_folder_topics(self, request, *args, **kwargs):
         folder_id = kwargs.get('folder_id')
         folder_topic_list = []
-        for data in Topics.objects.filter(state=1, folder=folder_id, document__isnull=True).values_list('id', 'name', 'folder'):
+        for data in Topics.objects.filter(
+                state=1,
+                folder=folder_id,
+                document__isnull=True
+        ).values_list('id', 'name', 'folder'):
             folder_topic_list.append(
                 {
                     'topic_name': data[1],
@@ -277,11 +311,14 @@ class TopicsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.U
             status=status.HTTP_200_OK
         )
 
-
     def get_document_topics(self, request, *args, **kwargs):
         document_id = kwargs.get('document_id')
         document_topic_list = []
-        for data in Topics.objects.filter(state=1, document=document_id, folder__isnull=True).values_list('id', 'name', 'document'):
+        for data in Topics.objects.filter(
+                state=1,
+                document=document_id,
+                folder__isnull=True
+        ).values_list('id', 'name', 'document'):
             document_topic_list.append(
                 {
                     'topic_name': data[1],

@@ -1,12 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from constants import STATE_TYPES
 
-# Create your models here.
-
-STATE_TYPES = (
-    (-1, _('Deleted')),
-    (1, _('Active')),
-)
 
 class BaseModel(models.Model):
     created = models.DateTimeField(

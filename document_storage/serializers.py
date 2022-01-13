@@ -38,14 +38,19 @@ class TopicsSerializer(serializers.Serializer):
 
     class Meta:
         model = Topics
-        fields = ('id', 'name', 'folder', 'document', 'short_form_descriptors', 'long_form_descriptors')
+        fields = ('id', 'name', 'folder', 'document',
+                  'short_form_descriptors', 'long_form_descriptors')
         read_only_fields = ('created', 'modified')
 
     def create(self, validated_data):
         topic_obj = Topics()
         topic_obj.name = validated_data.get('name')
-        topic_obj.short_form_descriptors = validated_data.get('short_form_descriptors')
-        topic_obj.long_form_descriptors = validated_data.get('long_form_descriptors')
+        topic_obj.short_form_descriptors = validated_data.get(
+            'short_form_descriptors'
+        )
+        topic_obj.long_form_descriptors = validated_data.get(
+            'long_form_descriptors'
+        )
         topic_obj.state = 1
         topic_obj.save()
         return topic_obj
