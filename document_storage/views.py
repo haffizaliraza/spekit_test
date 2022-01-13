@@ -15,14 +15,6 @@ class FolderInformationViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixi
 
     def get_folder_list(self, request, *args, **kwargs):
 
-        """
-           Returns a list of all **active** folders in the system.
-
-           For more details on how accounts are activated please [see here][ref].
-
-           [ref]: https://spekittestcode.herokuapp.com/api/folders/
-           """
-
 
         folder_list = []
         for folder in Folder.objects.filter(state=1):
