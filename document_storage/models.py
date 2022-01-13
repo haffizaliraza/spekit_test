@@ -82,12 +82,12 @@ class Topics(BaseModel):
         blank=True
     )
     short_form_descriptors = models.CharField(
-        max_length=50,
+        max_length=200,
         null=True,
         blank=True
     )
     long_form_descriptors = models.CharField(
-        max_length=50,
+        max_length=500,
         null=True,
         blank=True
     )

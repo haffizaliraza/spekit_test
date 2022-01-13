@@ -184,13 +184,15 @@ class TopicsViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.U
     def get_topic_list(self, request, *args, **kwargs):
         topic_list = []
 
-        for item in Topics.objects.filter(state__in=[1, 2]).values_list('id', 'name', 'folder', 'document'):
+        for item in Topics.objects.filter(state__in=[1, 2]).values_list('id', 'name', 'folder', 'document', 'short_form_descriptors', 'long_form_descriptors'):
             topic_list.append(
                 {
                     'id': item[0],
                     'topic_name': item[1],
                     'folder_id': item[2],
                     'document_id': item[3],
+                    'short_form_descriptors': item[4],
+                    'long_form_descriptors':  item[5]
                 }
             )
 
