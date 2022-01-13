@@ -95,11 +95,11 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'spekit_db',
-#         'USER': 'ali',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '',
+#         'NAME': 'dc97c0bgqaajh0',
+#         'USER': 'gwvjuesjrqhsox',
+#         'PASSWORD': '0339d265f7273a6fdf0ade08574abc62b9945fef553923742bba2ddb19647468',
+#         'HOST': 'ec2-184-73-243-101.compute-1.amazonaws.com',
+#         'PORT': '5432',
 #     }
 # }
 
