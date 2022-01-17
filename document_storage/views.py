@@ -67,6 +67,14 @@ class FolderInformationViewSet(
 
     def create(self, request, *args, **kwargs):
         request_data = request.data.copy()
+        if len(Folder.objects.filter(name=request_data['name'])):
+            return Response(
+                {
+                    'success': False,
+                    'detail': "Folder is already exists with this name"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
         folder_serializer = FolderSerializer(data=request_data)
         if folder_serializer.is_valid():
             folder_obj = folder_serializer.create(request_data)
