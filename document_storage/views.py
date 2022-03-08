@@ -27,10 +27,7 @@ class FolderInformationViewSet(
                     'folder_name': folder.name,
                     'document_list': [
                         document for document in
-                        folder.digital_documents_folder.filter(state=1).values_list(
-                            'name',
-                            flat=True
-                        )]
+                        folder.digital_documents_folder.filter(state=1).values_list('name',flat=True)]
                 }
             )
 
